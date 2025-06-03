@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import AddTodo from "./AddTodo";
+import AddTodo from "./components/AddTodo";
+import TodoList from "./components/TodoList";
+import { defaultTodos } from "./data/defaultTodos";
 
-type Todo = {
+export type Todo = {
   id: number;
   title: string;
   description: string;
@@ -11,40 +13,7 @@ type Todo = {
 export default function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>(() => {
     const stored = localStorage.getItem("todos");
-    return stored
-      ? JSON.parse(stored)
-      : [
-          {
-            id: 1,
-            title: "Springa 10km",
-            description: "5:00 pace i skogsmiljö",
-            done: false,
-          },
-          {
-            id: 2,
-            title: "Springa 5km",
-            description: "4:00 pace i skogsmiljö",
-            done: false,
-          },
-          {
-            id: 3,
-            title: "Springa 5km",
-            description: "3:30 pace på asfalt",
-            done: false,
-          },
-          {
-            id: 4,
-            title: "Springa 30km",
-            description: "5:30 pace i skogsmiljö",
-            done: false,
-          },
-          {
-            id: 5,
-            title: "Springa 1km",
-            description: "Det snabbaste du kan",
-            done: false,
-          },
-        ];
+    return stored ? JSON.parse(stored) : defaultTodos;
   });
 
   useEffect(() => {
@@ -84,24 +53,11 @@ export default function TodoApp() {
     <div>
       <h1>Löpning</h1>
       <AddTodo onAdd={addTodo} />
-      <ul>
-        {todos.map((todo: Todo) => (
-          <li
-            key={todo.id}
-            style={{
-              textDecoration: todo.done ? "line-through" : "none",
-              fontStyle: todo.done ? "italic" : "normal",
-              opacity: todo.done ? 0.5 : 1,
-            }}
-          >
-            <strong>{todo.title}</strong> – {todo.description}
-            <button onClick={() => toggleDone(todo.id)}>
-              {todo.done ? "ångra" : "klar"}
-            </button>
-            <button onClick={() => deleteTodo(todo.id)}>radera</button>
-          </li>
-        ))}
-      </ul>
+      <TodoList
+        todos={todos}
+        toggleDone={toggleDone}
+        deleteTodo={deleteTodo}
+      />
     </div>
   );
 }
