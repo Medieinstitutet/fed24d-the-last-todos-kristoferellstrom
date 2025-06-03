@@ -1,38 +1,43 @@
 import { useEffect, useState } from "react";
 
 export default function TodoApp() {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      title: "Springa 10km",
-      description: "5:00 pace i skogsmiljö",
-      done: false,
-    },
-    {
-      id: 2,
-      title: "Springa 5km",
-      description: "4:00 pace i skogsmiljö",
-      done: false,
-    },
-    {
-      id: 3,
-      title: "Springa 5km",
-      description: "3:00 pace på asfalt",
-      done: false,
-    },
-    {
-      id: 4,
-      title: "Springa 30km",
-      description: "5:30 pace i skogsmiljö",
-      done: false,
-    },
-    {
-      id: 5,
-      title: "Springa 1km",
-      description: "Det snabbaste du kan",
-      done: false,
-    },
-  ]);
+ const [todos, setTodos] = useState(() => {
+  const stored = localStorage.getItem("todos");
+  return stored
+    ? JSON.parse(stored)
+    : [
+        {
+          id: 1,
+          title: "Springa 10km",
+          description: "5:00 pace i skogsmiljö",
+          done: false,
+        },
+        {
+          id: 2,
+          title: "Springa 5km",
+          description: "4:00 pace i skogsmiljö",
+          done: false,
+        },
+        {
+          id: 3,
+          title: "Springa 5km",
+          description: "3:00 pace på asfalt",
+          done: false,
+        },
+        {
+          id: 4,
+          title: "Springa 30km",
+          description: "5:30 pace i skogsmiljö",
+          done: false,
+        },
+        {
+          id: 5,
+          title: "Springa 1km",
+          description: "Det snabbaste du kan",
+          done: false,
+        },
+      ];
+});
 
   useEffect(() => {
     const storedTodos = localStorage.getItem("todos");
