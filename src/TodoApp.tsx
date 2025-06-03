@@ -10,6 +10,10 @@ export default function TodoApp() {
     },
   ]);
 
+  const deleteTodo = (id: number) => {
+  setTodos(todos.filter(todo => todo.id !== id));
+   };  
+
   const toggleDone = (id: number) => {
     setTodos(todos.map(todo =>
       todo.id === id ? { ...todo, done: !todo.done } : todo
@@ -21,19 +25,21 @@ export default function TodoApp() {
       <h1>Todo</h1>
      <ul>
   {todos.map(todo => (
-    <li
-      key={todo.id}
-      style={{
-        textDecoration: todo.done ? "line-through" : "none",
-        fontStyle: todo.done ? "italic" : "normal",
-        opacity: todo.done ? 0.5 : 1,
-      }}
-    >
-      <strong>{todo.title}</strong> - {todo.description}
-      <button onClick={() => toggleDone(todo.id)}>
-        {todo.done ? "ångra" : "klar"}
-      </button>
-    </li>
+<li
+  key={todo.id}
+  style={{
+    textDecoration: todo.done ? "line-through" : "none",
+    fontStyle: todo.done ? "italic" : "normal",
+    opacity: todo.done ? 0.5 : 1,
+  }}
+>
+  <strong>{todo.title}</strong> – {todo.description}
+  <button onClick={() => toggleDone(todo.id)}>
+    {todo.done ? "ångra" : "klar"}
+  </button>
+  <button onClick={() => deleteTodo(todo.id)}>radera</button>
+</li>
+
   ))}
 </ul>
     </div>
