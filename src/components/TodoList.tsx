@@ -1,4 +1,3 @@
-// src/components/TodoList.tsx
 import TodoItem from "./TodoItem";
 import type { Todo } from "../TodoApp";
 import { List, Typography, Box } from "@mui/material";
