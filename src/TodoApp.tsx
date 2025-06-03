@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function TodoApp() {
   const [todos, setTodos] = useState([
@@ -34,9 +34,20 @@ export default function TodoApp() {
     },
   ]);
 
+  useEffect(() => {
+    const storedTodos = localStorage.getItem("todos");
+    if (storedTodos) {
+      setTodos(JSON.parse(storedTodos));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
   const deleteTodo = (id: number) => {
-  setTodos(todos.filter(todo => todo.id !== id));
-   };  
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
 
   const toggleDone = (id: number) => {
     setTodos(todos.map(todo =>
@@ -47,25 +58,24 @@ export default function TodoApp() {
   return (
     <div>
       <h1>Todo</h1>
-     <ul>
-  {todos.map(todo => (
-<li
-  key={todo.id}
-  style={{
-    textDecoration: todo.done ? "line-through" : "none",
-    fontStyle: todo.done ? "italic" : "normal",
-    opacity: todo.done ? 0.5 : 1,
-  }}
->
-  <strong>{todo.title}</strong> – {todo.description}
-  <button onClick={() => toggleDone(todo.id)}>
-    {todo.done ? "ångra" : "klar"}
-  </button>
-  <button onClick={() => deleteTodo(todo.id)}>radera</button>
-</li>
-
-  ))}
-</ul>
+      <ul>
+        {todos.map(todo => (
+          <li
+            key={todo.id}
+            style={{
+              textDecoration: todo.done ? "line-through" : "none",
+              fontStyle: todo.done ? "italic" : "normal",
+              opacity: todo.done ? 0.5 : 1,
+            }}
+          >
+            <strong>{todo.title}</strong> – {todo.description}
+            <button onClick={() => toggleDone(todo.id)}>
+              {todo.done ? "ångra" : "klar"}
+            </button>
+            <button onClick={() => deleteTodo(todo.id)}>radera</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
