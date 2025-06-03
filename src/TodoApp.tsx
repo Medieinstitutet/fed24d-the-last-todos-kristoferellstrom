@@ -13,7 +13,9 @@ export default function TodoApp() {
       <h1>Todo</h1>
       <ul>
         {todos.map(todo => (
-          <li key={todo.id}>{todo.title}</li>
+           <li key={todo.id}>
+            <strong>{todo.title}</strong> - {todo.description}
+           </li>
         ))}
       </ul>
     </div>
