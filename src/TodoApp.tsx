@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 import SortTodos from "./components/SortTodos";
+import VisuallyHidden from "./components/VisuallyHidden";
 import { defaultTodos } from "./data/defaultTodos";
 import { Container, Box, Typography } from "@mui/material";
 
@@ -17,10 +18,7 @@ export default function TodoApp() {
     const stored = localStorage.getItem("todos");
     return stored ? JSON.parse(stored) : defaultTodos;
   });
-
-  const [sortOrder, setSortOrder] = useState<
-    "newest" | "oldest" | "done" | "notDone"
-  >("newest");
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest" | "done" | "notDone">("newest");
 
   useEffect(() => {
     const storedTodos = localStorage.getItem("todos");
@@ -44,12 +42,12 @@ export default function TodoApp() {
   };
 
   const deleteTodo = (id: number) => {
-    setTodos(todos.filter((todo: Todo) => todo.id !== id));
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   const toggleDone = (id: number) => {
     setTodos(
-      todos.map((todo: Todo) =>
+      todos.map((todo) =>
         todo.id === id ? { ...todo, done: !todo.done } : todo
       )
     );
@@ -59,7 +57,7 @@ export default function TodoApp() {
     if (sortOrder === "newest") return b.id - a.id;
     if (sortOrder === "oldest") return a.id - b.id;
     if (sortOrder === "done") return Number(!a.done) - Number(!b.done);
-    if (sortOrder === "notDone") return Number(a.done) - Number(b.done);
+    if (sortOrder === "notDone") return Number(a.done) - Number(a.done);
     return 0;
   });
 
@@ -102,68 +100,23 @@ export default function TodoApp() {
         </Box>
 
         <Box component="section" aria-labelledby="add-todo-heading" sx={{ mb: 3 }}>
-          <Typography
-            id="add-todo-heading"
-            variant="h6"
-            component="h2"
-            sx={{
-              position: "absolute",
-              width: 1,
-              height: 1,
-              p: 0,
-              m: -1,
-              overflow: "hidden",
-              clip: "rect(0, 0, 0, 0)",
-              whiteSpace: "nowrap",
-              border: 0,
-            }}
-          >
+          <VisuallyHidden id="add-todo-heading">
             Lägg till ny uppgift
-          </Typography>
+          </VisuallyHidden>
           <AddTodo onAdd={addTodo} />
         </Box>
 
         <Box component="section" aria-labelledby="sort-todo-heading" sx={{ mb: 3 }}>
-          <Typography
-            id="sort-todo-heading"
-            variant="h6"
-            component="h2"
-            sx={{
-              position: "absolute",
-              width: 1,
-              height: 1,
-              p: 0,
-              m: -1,
-              overflow: "hidden",
-              clip: "rect(0, 0, 0, 0)",
-              whiteSpace: "nowrap",
-              border: 0,
-            }}
-          >
+          <VisuallyHidden id="sort-todo-heading">
             Sortera uppgifter
-          </Typography>
+          </VisuallyHidden>
           <SortTodos sortOrder={sortOrder} setSortOrder={setSortOrder} />
         </Box>
 
         <Box component="section" aria-labelledby="todo-list-heading">
-          <Typography
-            id="todo-list-heading"
-            variant="h6"
-            component="h2"
-            sx={{
-              position: "absolute",
-              width: 1,
-              height: 1,
-              p: 0,
-              m: -1,
-              overflow: "hidden",
-              clip: "rect(0, 0, 0, 0)",
-              whiteSpace: "nowrap",
-              border: 0,
-            }}
-          >
+          <VisuallyHidden id="todo-list-heading">
             Lista över uppgifter
-          </Typography>
+          </VisuallyHidden>
           <TodoList
             todos={sortedTodos}
             toggleDone={toggleDone}
