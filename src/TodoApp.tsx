@@ -1,7 +1,8 @@
 import { useState } from "react";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
-import SortTodos from "./components/SortTodos";
+import SortTodos, { sortTodos } from "./components/SortTodos";
+import type { SortOrder } from "./components/SortTodos";
 import VisuallyHidden from "./components/VisuallyHidden";
 import Layout from "./components/Layout";
 import { useTodos } from "./hooks/useTodos";
@@ -16,23 +17,9 @@ export type Todo = {
 
 export default function TodoApp() {
   const { todos, addTodo, deleteTodo, toggleDone } = useTodos();
-  const [sortOrder, setSortOrder] = useState<"newest" | "oldest" | "done" | "notDone">("newest");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
 
-  const sortedTodos = [...todos].sort((a, b) => {
-    if (sortOrder === "newest") {
-      return b.id - a.id;
-    }
-    if (sortOrder === "oldest") {
-      return a.id - b.id;
-    }
-    if (sortOrder === "done") {
-      return (b.done ? 1 : 0) - (a.done ? 1 : 0);
-    }
-    if (sortOrder === "notDone") {
-      return (a.done ? 1 : 0) - (b.done ? 1 : 0);
-    }
-    return 0;
-  });
+  const sortedTodos = sortTodos(todos, sortOrder);
 
   return (
     <Layout>
