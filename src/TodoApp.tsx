@@ -2,22 +2,40 @@ import { useState } from "react";
 
 export default function TodoApp() {
   const [todos, setTodos] = useState([
-    { id: 1, title: "Springa 10 km", 
-        description: "5:00 pace i skogsmiljö", 
-        done: false 
-    }
+    {
+      id: 1,
+      title: "Springa 10 km",
+      description: "5:00 pace i skogsmiljö",
+      done: false,
+    },
   ]);
+
+  const toggleDone = (id: number) => {
+    setTodos(todos.map(todo =>
+      todo.id === id ? { ...todo, done: !todo.done } : todo
+    ));
+  };
 
   return (
     <div>
       <h1>Todo</h1>
-      <ul>
-        {todos.map(todo => (
-           <li key={todo.id}>
-            <strong>{todo.title}</strong> - {todo.description}
-           </li>
-        ))}
-      </ul>
+     <ul>
+  {todos.map(todo => (
+    <li
+      key={todo.id}
+      style={{
+        textDecoration: todo.done ? "line-through" : "none",
+        fontStyle: todo.done ? "italic" : "normal",
+        opacity: todo.done ? 0.5 : 1,
+      }}
+    >
+      <strong>{todo.title}</strong> - {todo.description}
+      <button onClick={() => toggleDone(todo.id)}>
+        {todo.done ? "ångra" : "klar"}
+      </button>
+    </li>
+  ))}
+</ul>
     </div>
   );
 }
