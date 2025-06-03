@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
+import SortTodos from "./components/SortTodos";
 import { defaultTodos } from "./data/defaultTodos";
 
 export type Todo = {
@@ -15,6 +16,8 @@ export default function TodoApp() {
     const stored = localStorage.getItem("todos");
     return stored ? JSON.parse(stored) : defaultTodos;
   });
+
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest" | "done" | "notDone">("newest");
 
   useEffect(() => {
     const storedTodos = localStorage.getItem("todos");
@@ -49,12 +52,21 @@ export default function TodoApp() {
     );
   };
 
+  const sortedTodos = [...todos].sort((a, b) => {
+    if (sortOrder === "newest") return b.id - a.id;
+    if (sortOrder === "oldest") return a.id - b.id;
+    if (sortOrder === "done") return Number(!a.done) - Number(!b.done);
+    if (sortOrder === "notDone") return Number(a.done) - Number(b.done);
+    return 0;
+  });
+
   return (
     <div>
       <h1>Löpning</h1>
       <AddTodo onAdd={addTodo} />
+      <SortTodos sortOrder={sortOrder} setSortOrder={setSortOrder} />
       <TodoList
-        todos={todos}
+        todos={sortedTodos}
         toggleDone={toggleDone}
         deleteTodo={deleteTodo}
       />
