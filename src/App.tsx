@@ -1,8 +1,9 @@
-import "./App.css";
 import TodoApp from "./TodoApp";
 
-function App() {
-  return <TodoApp />;
+export default function App() {
+  return (
+    <div>
+      <TodoApp />
+    </div>
+  );
 }
-
-export default App;
